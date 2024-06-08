@@ -15,8 +15,8 @@ Setup Instructions
 
 1.  **Clone the Repository**
     
-        git clone <repository-url>
-        cd <repository-directory>
+        git clone https://github.com/oniseun/silver-journey
+        cd frontend
     
 2.  **Use the Correct Node Version**
     
@@ -59,9 +59,7 @@ The application requires several environment variables to be set. Use the `.env.
 
     PORT=3005
     REACT_APP_API_ENDPOINT=http://localhost:3006/api
-    REACT_APP_OTHER_ENV_VAR=some_value
 
-Make sure to replace the placeholder values with the actual values required for your setup.
 
 Scripts
 -------
@@ -79,10 +77,6 @@ Additional Information
 *   Bootstrap 4 is used for styling the components.
 *   Backend should run on `localhost:3006`.
 
-Logging
--------
-
-Logging is configured using `pino` and `nestjs-pino` for backend, with sensitive data such as `name`, `symptoms`, and `chronicConditionDetails` being masked.
 
 Example `.env.development.local`
 --------------------------------
