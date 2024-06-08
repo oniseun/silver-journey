@@ -63,7 +63,7 @@ const MyForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormData> = async data => {
     setLoading(true);
     try {
-      await axios.post('/questionnaire', data);
+      await axios.post('/questionnaires', data);
       toast.success(
         <div>
           <FontAwesomeIcon icon={faCheckCircle} /> Form submitted successfully!
@@ -99,10 +99,10 @@ const MyForm: React.FC = () => {
   };
 
   const handleConvertAndSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
     const values = getValues();
     setValue('age', parseInt(values.age.toString(), 10));
-    clearErrors('age'); // Clear the age error if any
+    clearErrors('age');
     handleSubmit(onSubmit)();
   };
 

@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { QuestionnaireModule } from './questionnaire/questionnaire.module';
-import { Questionnaire } from './questionnaire/entities/questionnaire.entity';
+import { PinoLoggerModule } from './pino-logger';
 
 @Module({
   imports: [
@@ -17,16 +17,17 @@ import { Questionnaire } from './questionnaire/entities/questionnaire.entity';
         type: 'mysql',
         driver: require('mysql2'),
         host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
+        port: +configService.get<number>('MYSQL_PORT'),
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [Questionnaire],
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     QuestionnaireModule,
+    PinoLoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
