@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "silver-journey-backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "class-validator": "^0.14.1",
+    "crypto-js": "^4.2.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",

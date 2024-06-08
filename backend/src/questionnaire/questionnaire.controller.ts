@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { QuestionnaireService } from './questionnaire.service';
 import { CreateQuestionnaireDto } from './dto/create-questionnaire.dto';
+import { QuestionnaireListDto } from './dto/questionnaire-list.dto';
 
-@Controller('questionnaire')
+@Controller('questionnaires')
 export class QuestionnaireController {
   constructor(private readonly questionnaireService: QuestionnaireService) {}
 
@@ -12,7 +13,8 @@ export class QuestionnaireController {
   }
 
   @Get()
-  findAll() {
-    return this.questionnaireService.findAll();
+  async findAll(): Promise<QuestionnaireListDto[]> {
+    const questionnaires = await this.questionnaireService.findAll();
+    return questionnaires.map((q) => new QuestionnaireListDto(q));
   }
 }
