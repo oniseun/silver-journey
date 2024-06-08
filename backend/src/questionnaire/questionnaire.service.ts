@@ -7,6 +7,8 @@ import { QuestionnaireListDto } from './dto/questionnaire-list.dto';
 import * as CryptoJS from 'crypto-js';
 import { HealthCondition } from '../common/enums/health-condition.enum';
 import { YesNo } from '../common/enums/yes-no.enum';
+import { validate } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class QuestionnaireService {
@@ -18,6 +20,15 @@ export class QuestionnaireService {
   async create(
     createQuestionnaireDto: CreateQuestionnaireDto,
   ): Promise<Questionnaire> {
+    const dtoInstance = plainToInstance(
+      CreateQuestionnaireDto,
+      createQuestionnaireDto,
+    );
+    const errors = await validate(dtoInstance);
+    if (errors.length > 0) {
+      throw new BadRequestException(errors);
+    }
+
     if (
       createQuestionnaireDto.experiencedSymptoms === YesNo.No &&
       createQuestionnaireDto.symptoms

@@ -1,22 +1,35 @@
-import { createMock } from '@golevelup/ts-jest';
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuestionnaireService } from './questionnaire.service';
 import { Questionnaire } from './entities/questionnaire.entity';
 import { CreateQuestionnaireDto } from './dto/create-questionnaire.dto';
-import { QuestionnaireListDto } from './dto/questionnaire-list.dto';
 import { Gender } from '../common/enums/gender.enum';
 import { HealthCondition } from '../common/enums/health-condition.enum';
 import { YesNo } from '../common/enums/yes-no.enum';
 import * as CryptoJS from 'crypto-js';
+import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 
 describe('QuestionnaireService', () => {
   let service: QuestionnaireService;
   let repository: Repository<Questionnaire>;
 
-  beforeEach(() => {
-    repository = createMock<Repository<Questionnaire>>();
-    service = new QuestionnaireService(repository);
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        QuestionnaireService,
+        {
+          provide: getRepositoryToken(Questionnaire),
+          useClass: Repository,
+        },
+      ],
+    }).compile();
+
+    service = module.get<QuestionnaireService>(QuestionnaireService);
+    repository = module.get<Repository<Questionnaire>>(
+      getRepositoryToken(Questionnaire),
+    );
     process.env.ENCRYPTION_KEY = 'testkey';
   });
 
@@ -33,18 +46,28 @@ describe('QuestionnaireService', () => {
       experiencedSymptoms: YesNo.No,
     };
 
-    const result = {
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
+    const savedQuestionnaire = {
       id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
       dateCreated: new Date(),
       dateUpdated: new Date(),
     };
 
-    (repository.save as jest.Mock).mockResolvedValue(result);
+    jest.spyOn(repository, 'create').mockReturnValue(savedQuestionnaire as any);
+    jest.spyOn(repository, 'save').mockResolvedValue(savedQuestionnaire as any);
 
-    expect(await service.create(createQuestionnaireDto)).toEqual(result);
+    const result = await service.create(createQuestionnaireDto);
+    expect(result).toEqual(savedQuestionnaire);
     expect(repository.save).toHaveBeenCalledWith(
-      expect.objectContaining(createQuestionnaireDto),
+      expect.objectContaining({
+        ...createQuestionnaireDto,
+        name: encryptedName,
+      }),
     );
   });
 
@@ -58,18 +81,28 @@ describe('QuestionnaireService', () => {
       symptoms: 'Cough and fever',
     };
 
-    const result = {
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
+    const savedQuestionnaire = {
       id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
       dateCreated: new Date(),
       dateUpdated: new Date(),
     };
 
-    (repository.save as jest.Mock).mockResolvedValue(result);
+    jest.spyOn(repository, 'create').mockReturnValue(savedQuestionnaire as any);
+    jest.spyOn(repository, 'save').mockResolvedValue(savedQuestionnaire as any);
 
-    expect(await service.create(createQuestionnaireDto)).toEqual(result);
+    const result = await service.create(createQuestionnaireDto);
+    expect(result).toEqual(savedQuestionnaire);
     expect(repository.save).toHaveBeenCalledWith(
-      expect.objectContaining(createQuestionnaireDto),
+      expect.objectContaining({
+        ...createQuestionnaireDto,
+        name: encryptedName,
+      }),
     );
   });
 
@@ -82,18 +115,28 @@ describe('QuestionnaireService', () => {
       experiencedSymptoms: YesNo.No,
     };
 
-    const result = {
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
+    const savedQuestionnaire = {
       id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
       dateCreated: new Date(),
       dateUpdated: new Date(),
     };
 
-    (repository.save as jest.Mock).mockResolvedValue(result);
+    jest.spyOn(repository, 'create').mockReturnValue(savedQuestionnaire as any);
+    jest.spyOn(repository, 'save').mockResolvedValue(savedQuestionnaire as any);
 
-    expect(await service.create(createQuestionnaireDto)).toEqual(result);
+    const result = await service.create(createQuestionnaireDto);
+    expect(result).toEqual(savedQuestionnaire);
     expect(repository.save).toHaveBeenCalledWith(
-      expect.objectContaining(createQuestionnaireDto),
+      expect.objectContaining({
+        ...createQuestionnaireDto,
+        name: encryptedName,
+      }),
     );
   });
 
@@ -107,18 +150,28 @@ describe('QuestionnaireService', () => {
       symptoms: 'Headache and nausea',
     };
 
-    const result = {
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
+    const savedQuestionnaire = {
       id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
       dateCreated: new Date(),
       dateUpdated: new Date(),
     };
 
-    (repository.save as jest.Mock).mockResolvedValue(result);
+    jest.spyOn(repository, 'create').mockReturnValue(savedQuestionnaire as any);
+    jest.spyOn(repository, 'save').mockResolvedValue(savedQuestionnaire as any);
 
-    expect(await service.create(createQuestionnaireDto)).toEqual(result);
+    const result = await service.create(createQuestionnaireDto);
+    expect(result).toEqual(savedQuestionnaire);
     expect(repository.save).toHaveBeenCalledWith(
-      expect.objectContaining(createQuestionnaireDto),
+      expect.objectContaining({
+        ...createQuestionnaireDto,
+        name: encryptedName,
+      }),
     );
   });
 
@@ -133,18 +186,28 @@ describe('QuestionnaireService', () => {
       chronicConditionDetails: 'Diagnosed with chronic arthritis',
     };
 
-    const result = {
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
+    const savedQuestionnaire = {
       id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
       dateCreated: new Date(),
       dateUpdated: new Date(),
     };
 
-    (repository.save as jest.Mock).mockResolvedValue(result);
+    jest.spyOn(repository, 'create').mockReturnValue(savedQuestionnaire as any);
+    jest.spyOn(repository, 'save').mockResolvedValue(savedQuestionnaire as any);
 
-    expect(await service.create(createQuestionnaireDto)).toEqual(result);
+    const result = await service.create(createQuestionnaireDto);
+    expect(result).toEqual(savedQuestionnaire);
     expect(repository.save).toHaveBeenCalledWith(
-      expect.objectContaining(createQuestionnaireDto),
+      expect.objectContaining({
+        ...createQuestionnaireDto,
+        name: encryptedName,
+      }),
     );
   });
 
@@ -152,37 +215,52 @@ describe('QuestionnaireService', () => {
     const createQuestionnaireDto: Partial<CreateQuestionnaireDto> = {};
 
     const errors = await validate(
-      createQuestionnaireDto as CreateQuestionnaireDto,
+      plainToInstance(
+        CreateQuestionnaireDto,
+        createQuestionnaireDto,
+      ) as CreateQuestionnaireDto,
     );
     expect(errors).toHaveLength(5);
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'name',
-        constraints: { isNotEmpty: 'Name is required' },
+        constraints: expect.objectContaining({
+          isNotEmpty: 'Name is required',
+          isString: 'name must be a string',
+          isLength: 'Name must be between 1 and 15 characters',
+        }),
       }),
     );
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'age',
-        constraints: { isPositive: 'Age must be a positive number' },
+        constraints: expect.objectContaining({
+          isPositive: 'Age must be a positive number',
+        }),
       }),
     );
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'gender',
-        constraints: { isEnum: 'Gender is required' },
+        constraints: expect.objectContaining({
+          isEnum: 'Gender is required',
+        }),
       }),
     );
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'healthCondition',
-        constraints: { isEnum: 'Health condition is required' },
+        constraints: expect.objectContaining({
+          isEnum: 'Health condition is required',
+        }),
       }),
     );
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'experiencedSymptoms',
-        constraints: { isEnum: 'Experienced symptoms is required' },
+        constraints: expect.objectContaining({
+          isEnum: 'Experienced symptoms is required',
+        }),
       }),
     );
   });
@@ -196,12 +274,16 @@ describe('QuestionnaireService', () => {
       experiencedSymptoms: YesNo.Yes,
     };
 
-    const errors = await validate(createQuestionnaireDto);
+    const errors = await validate(
+      plainToInstance(CreateQuestionnaireDto, createQuestionnaireDto),
+    );
     expect(errors).toHaveLength(1);
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'symptoms',
-        constraints: { isNotEmpty: 'Please list your symptoms' },
+        constraints: expect.objectContaining({
+          isNotEmpty: 'Please list your symptoms',
+        }),
       }),
     );
   });
@@ -215,12 +297,16 @@ describe('QuestionnaireService', () => {
       experiencedSymptoms: YesNo.Yes,
     };
 
-    const errors = await validate(createQuestionnaireDto);
+    const errors = await validate(
+      plainToInstance(CreateQuestionnaireDto, createQuestionnaireDto),
+    );
     expect(errors).toHaveLength(1);
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'symptoms',
-        constraints: { isNotEmpty: 'Please list your symptoms' },
+        constraints: expect.objectContaining({
+          isNotEmpty: 'Please list your symptoms',
+        }),
       }),
     );
   });
@@ -234,20 +320,24 @@ describe('QuestionnaireService', () => {
       experiencedSymptoms: YesNo.Yes,
     };
 
-    const errors = await validate(createQuestionnaireDto);
+    const errors = await validate(
+      plainToInstance(CreateQuestionnaireDto, createQuestionnaireDto),
+    );
     expect(errors).toHaveLength(2);
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'symptoms',
-        constraints: { isNotEmpty: 'Please list your symptoms' },
+        constraints: expect.objectContaining({
+          isNotEmpty: 'Please list your symptoms',
+        }),
       }),
     );
     expect(errors).toContainEqual(
       expect.objectContaining({
         property: 'chronicConditionDetails',
-        constraints: {
+        constraints: expect.objectContaining({
           isNotEmpty: 'Please provide details about your chronic illness',
-        },
+        }),
       }),
     );
   });
@@ -285,18 +375,31 @@ describe('QuestionnaireService', () => {
       },
     ];
 
-    (repository.find as jest.Mock).mockResolvedValue(questionnaires);
+    jest.spyOn(repository, 'find').mockResolvedValue(questionnaires as any);
 
     const result = await service.findAll();
     expect(result).toEqual([
-      new QuestionnaireListDto({
-        ...questionnaires[0],
+      {
+        id: 'uuid1',
         name: 'J**n Doe',
-      }),
-      new QuestionnaireListDto({
-        ...questionnaires[1],
+        age: 30,
+        gender: Gender.Male,
+        healthCondition: HealthCondition.Healthy,
+        experiencedSymptoms: YesNo.No,
+        dateCreated: questionnaires[0].dateCreated,
+        dateUpdated: questionnaires[0].dateUpdated,
+      },
+      {
+        id: 'uuid2',
         name: 'J**e Smith',
-      }),
+        age: 25,
+        gender: Gender.Female,
+        healthCondition: HealthCondition.MinorIllness,
+        experiencedSymptoms: YesNo.Yes,
+        symptoms: 'Cough',
+        dateCreated: questionnaires[1].dateCreated,
+        dateUpdated: questionnaires[1].dateUpdated,
+      },
     ]);
     expect(repository.find).toHaveBeenCalled();
   });
@@ -311,13 +414,9 @@ describe('QuestionnaireService', () => {
       symptoms: 'Cough and fever',
     };
 
-    try {
-      await service.create(createQuestionnaireDto);
-    } catch (error) {
-      expect(error.message).toContain(
-        'symptoms should not be provided if experienced symptoms is no',
-      );
-    }
+    await expect(service.create(createQuestionnaireDto)).rejects.toThrow(
+      'symptoms should not be provided if experienced symptoms is no',
+    );
   });
 
   it('should not allow chronicConditionDetails if healthCondition is not chronic illness', async () => {
@@ -330,12 +429,8 @@ describe('QuestionnaireService', () => {
       chronicConditionDetails: 'Diagnosed with chronic arthritis',
     };
 
-    try {
-      await service.create(createQuestionnaireDto);
-    } catch (error) {
-      expect(error.message).toContain(
-        'chronicConditionDetails should not be provided if healthCondition is not chronic illness',
-      );
-    }
+    await expect(service.create(createQuestionnaireDto)).rejects.toThrow(
+      'chronicConditionDetails should not be provided if healthCondition is not chronic illness',
+    );
   });
 });
