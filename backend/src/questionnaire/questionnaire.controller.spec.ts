@@ -2,6 +2,11 @@ import { createMock } from '@golevelup/ts-jest';
 import { QuestionnaireController } from './questionnaire.controller';
 import { QuestionnaireService } from './questionnaire.service';
 import { CreateQuestionnaireDto } from './dto/create-questionnaire.dto';
+import { QuestionnaireListDto } from './dto/questionnaire-list.dto';
+import { Gender } from '../common/enums/gender.enum';
+import { HealthCondition } from '../common/enums/health-condition.enum';
+import { YesNo } from '../common/enums/yes-no.enum';
+import * as CryptoJS from 'crypto-js';
 
 describe('QuestionnaireController', () => {
   let controller: QuestionnaireController;
@@ -10,6 +15,7 @@ describe('QuestionnaireController', () => {
   beforeEach(() => {
     service = createMock<QuestionnaireService>();
     controller = new QuestionnaireController(service);
+    process.env.ENCRYPTION_KEY = 'testkey';
   });
 
   it('should be defined', () => {
@@ -20,14 +26,21 @@ describe('QuestionnaireController', () => {
     const createQuestionnaireDto: CreateQuestionnaireDto = {
       name: 'John Doe',
       age: 30,
-      gender: 'male',
-      healthCondition: 'Healthy',
-      experiencedSymptoms: 'no',
+      gender: Gender.Male,
+      healthCondition: HealthCondition.Healthy,
+      experiencedSymptoms: YesNo.No,
     };
 
+    const encryptedName = CryptoJS.AES.encrypt(
+      createQuestionnaireDto.name,
+      process.env.ENCRYPTION_KEY,
+    ).toString();
     const result = {
-      id: 1,
+      id: 'uuid',
       ...createQuestionnaireDto,
+      name: encryptedName,
+      dateCreated: new Date(),
+      dateUpdated: new Date(),
     };
 
     (service.create as jest.Mock).mockResolvedValue(result);
@@ -36,29 +49,39 @@ describe('QuestionnaireController', () => {
     expect(service.create).toHaveBeenCalledWith(createQuestionnaireDto);
   });
 
-  it('should return a list of questionnaires', async () => {
+  it('should return a list of questionnaires with masked names', async () => {
+    const decryptedName1 = 'John Doe';
+    const decryptedName2 = 'Jane Smith';
     const questionnaires = [
       {
-        id: 1,
-        name: 'John Doe',
+        id: 'uuid1',
+        name: decryptedName1,
         age: 30,
-        gender: 'male',
-        healthCondition: 'Healthy',
-        experiencedSymptoms: 'no',
+        gender: Gender.Male,
+        healthCondition: HealthCondition.Healthy,
+        experiencedSymptoms: YesNo.No,
+        dateCreated: new Date(),
+        dateUpdated: new Date(),
       },
       {
-        id: 2,
-        name: 'Jane Doe',
+        id: 'uuid2',
+        name: decryptedName2,
         age: 25,
-        gender: 'female',
-        healthCondition: 'Healthy',
-        experiencedSymptoms: 'no',
+        gender: Gender.Female,
+        healthCondition: HealthCondition.MinorIllness,
+        experiencedSymptoms: YesNo.Yes,
+        symptoms: 'Cough',
+        dateCreated: new Date(),
+        dateUpdated: new Date(),
       },
     ];
 
-    (service.findAll as jest.Mock).mockResolvedValue(questionnaires);
+    const maskedQuestionnaires = questionnaires.map(
+      (q) => new QuestionnaireListDto(q),
+    );
 
-    expect(await controller.findAll()).toEqual(questionnaires);
-    expect(service.findAll).toHaveBeenCalled();
+    (service.findAll as jest.Mock).mockResolvedValue(maskedQuestionnaires);
+
+    expect(await controller.findAll()).toEqual(maskedQuestionnaires);
   });
 });
