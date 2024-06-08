@@ -33,7 +33,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "setup": "cp .env.development.sample .env.development.local; npm i"
   },
   "eslintConfig": {
     "extends": [

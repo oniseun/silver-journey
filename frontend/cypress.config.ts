@@ -5,7 +5,7 @@ export default defineConfig({
     baseUrl: "http://localhost:3005",
     specPattern: "tests/e2e/**/*.{js,jsx,ts,tsx}", 
     supportFile: false,
-    fileServerFolder: '.cypress'
+    fileServerFolder: 'cypress'
   },
 
   component: {

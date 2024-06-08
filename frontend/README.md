@@ -1,46 +1,104 @@
-# Getting Started with Create React App
+Health Questionnaire Frontend
+=============================
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend part of the Health Questionnaire application built with React and Bootstrap 4.
 
-## Available Scripts
+Prerequisites
+-------------
 
-In the project directory, you can run:
+*   Node.js version: v18.19.0
+*   NPM
+*   NVM (Node Version Manager)
 
-### `npm start`
+Setup Instructions
+------------------
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1.  **Clone the Repository**
+    
+        git clone <repository-url>
+        cd <repository-directory>
+    
+2.  **Use the Correct Node Version**
+    
+    Ensure you are using the correct version of Node.js:
+    
+        nvm use
+    
+3.  **Setup Environment Variables and Install Packages**
+    
+    Run the following command to set up environment variables and install the required packages:
+    
+        npm run setup
+    
+4.  **Start the Development Server**
+    
+    The frontend will run on `localhost:3005`:
+    
+        npm run start
+    
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Running Tests
+-------------
 
-### `npm test`
+### Unit Tests
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To run the unit tests, use the following command:
 
-### `npm run build`
+    npm run test
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### End-to-End Tests
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run the end-to-end tests using Cypress, use the following command:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    npm run cypress:run
 
-### `npm run eject`
+Environment Variables
+---------------------
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The application requires several environment variables to be set. Use the `.env.development.local` file for setting these variables. A sample file is provided for reference.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    PORT=3005
+    REACT_APP_API_ENDPOINT=http://localhost:3006/api
+    REACT_APP_OTHER_ENV_VAR=some_value
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Make sure to replace the placeholder values with the actual values required for your setup.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Scripts
+-------
 
-## Learn More
+*   `npm run start`: Starts the development server.
+*   `npm run build`: Builds the application for production.
+*   `npm run test`: Runs the unit tests.
+*   `npm run cypress:run`: Runs the Cypress end-to-end tests.
+*   `npm run setup`: Copies environment variables from `.env.development.sample` to `.env.development.local` and installs packages.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Additional Information
+----------------------
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+*   The application uses React with functional components and hooks.
+*   Bootstrap 4 is used for styling the components.
+*   Backend should run on `localhost:3006`.
+
+Logging
+-------
+
+Logging is configured using `pino` and `nestjs-pino` for backend, with sensitive data such as `name`, `symptoms`, and `chronicConditionDetails` being masked.
+
+Example `.env.development.local`
+--------------------------------
+
+Here is an example of what your `.env.development.local` should look like:
+
+    PORT=3005
+    REACT_APP_API_ENDPOINT=http://localhost:3006/api
+
+Usage
+-----
+
+Once the setup is complete, you can start the application by running:
+
+    npm run start
+
+The application will be accessible at `http://localhost:3005`.
+
+Feel free to reach out if you have any questions or need further assistance.
