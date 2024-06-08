@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { superstructResolver } from '@hookform/resolvers/superstruct';
 import schema from '../schemas/validationSchema';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,30 +37,7 @@ const MyForm: React.FC = () => {
   const experiencedSymptoms = watch('experiencedSymptoms');
   const healthCondition = watch('healthCondition');
 
-  const getErrorMessage = (field: string, type: string): string => {
-    console.log({field, type})
-    const messages: { [key: string]: { [key: string]: string } } = {
-      number: {
-        age: 'Age must be a positive number',
-      },
-      string: {
-        name: 'Name is required',
-        symptoms: 'Please list your symptoms',
-        chronicConditionDetails: 'Please provide details about your chronic illness',
-      },
-      enums: {
-        gender: 'Gender is required',
-        healthCondition: 'Health condition is required',
-        experiencedSymptoms: 'Experienced symptoms is required',
-      }
-    };
-
-    return messages[type] && messages[type][field]
-      ? messages[type][field]
-      : `${field} is required`;
-  };
-
-  const onSubmit: SubmitHandler<FormData> = async data => {
+  const onSubmit = async (data: FormData) => {
     setLoading(true);
     try {
       await axios.post('/questionnaire', data);
@@ -121,7 +98,7 @@ const MyForm: React.FC = () => {
                 className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                 {...register('name')}
               />
-              {errors.name && <div className="invalid-feedback">{getErrorMessage('name', errors.name.type)}</div>}
+              {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
             </div>
 
             <div className="form-group">
@@ -136,7 +113,7 @@ const MyForm: React.FC = () => {
                   clearErrors('age'); // Clear the age error if any
                 }}
               />
-              {errors.age && <div className="invalid-feedback">{getErrorMessage('age', errors.age.type)}</div>}
+              {errors.age && <div className="invalid-feedback">{errors.age.message}</div>}
             </div>
 
             <div className="form-group">
@@ -151,7 +128,7 @@ const MyForm: React.FC = () => {
                 <option value={Gender.Female}>Female</option>
                 <option value={Gender.Diverse}>Diverse</option>
               </select>
-              {errors.gender && <div className="invalid-feedback">{getErrorMessage('gender', errors.gender.type)}</div>}
+              {errors.gender && <div className="invalid-feedback">{errors.gender.message}</div>}
             </div>
 
             <div className="form-group">
@@ -166,7 +143,7 @@ const MyForm: React.FC = () => {
                 <option value={HealthCondition.MinorIllness}>Minor illness</option>
                 <option value={HealthCondition.ChronicIllness}>Chronic illness</option>
               </select>
-              {errors.healthCondition && <div className="invalid-feedback">{getErrorMessage('healthCondition', errors.healthCondition.type)}</div>}
+              {errors.healthCondition && <div className="invalid-feedback">{errors.healthCondition.message}</div>}
             </div>
 
             <div className="form-group">
@@ -180,7 +157,7 @@ const MyForm: React.FC = () => {
                 <option value={YesNo.Yes}>Yes</option>
                 <option value={YesNo.No}>No</option>
               </select>
-              {errors.experiencedSymptoms && <div className="invalid-feedback">{getErrorMessage('experiencedSymptoms', errors.experiencedSymptoms.type)}</div>}
+              {errors.experiencedSymptoms && <div className="invalid-feedback">{errors.experiencedSymptoms.message}</div>}
             </div>
 
             {experiencedSymptoms === YesNo.Yes && (
@@ -191,7 +168,7 @@ const MyForm: React.FC = () => {
                   className={`form-control ${errors.symptoms ? 'is-invalid' : ''}`}
                   {...register('symptoms')}
                 />
-                {errors.symptoms && <div className="invalid-feedback">{getErrorMessage('symptoms', errors.symptoms.type)}</div>}
+                {errors.symptoms && <div className="invalid-feedback">{errors.symptoms.message}</div>}
               </div>
             )}
 
@@ -203,7 +180,7 @@ const MyForm: React.FC = () => {
                   className={`form-control ${errors.chronicConditionDetails ? 'is-invalid' : ''}`}
                   {...register('chronicConditionDetails')}
                 />
-                {errors.chronicConditionDetails && <div className="invalid-feedback">{getErrorMessage('chronicConditionDetails', errors.chronicConditionDetails.type)}</div>}
+                {errors.chronicConditionDetails && <div className="invalid-feedback">{errors.chronicConditionDetails.message}</div>}
               </div>
             )}
 
