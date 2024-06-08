@@ -300,4 +300,42 @@ describe('QuestionnaireService', () => {
     ]);
     expect(repository.find).toHaveBeenCalled();
   });
+
+  it('should not allow symptoms if experiencedSymptoms is no', async () => {
+    const createQuestionnaireDto: CreateQuestionnaireDto = {
+      name: 'John Doe',
+      age: 30,
+      gender: Gender.Male,
+      healthCondition: HealthCondition.Healthy,
+      experiencedSymptoms: YesNo.No,
+      symptoms: 'Cough and fever',
+    };
+
+    try {
+      await service.create(createQuestionnaireDto);
+    } catch (error) {
+      expect(error.message).toContain(
+        'symptoms should not be provided if experienced symptoms is no',
+      );
+    }
+  });
+
+  it('should not allow chronicConditionDetails if healthCondition is not chronic illness', async () => {
+    const createQuestionnaireDto: CreateQuestionnaireDto = {
+      name: 'John Doe',
+      age: 30,
+      gender: Gender.Male,
+      healthCondition: HealthCondition.Healthy,
+      experiencedSymptoms: YesNo.No,
+      chronicConditionDetails: 'Diagnosed with chronic arthritis',
+    };
+
+    try {
+      await service.create(createQuestionnaireDto);
+    } catch (error) {
+      expect(error.message).toContain(
+        'chronicConditionDetails should not be provided if healthCondition is not chronic illness',
+      );
+    }
+  });
 });

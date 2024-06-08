@@ -14,7 +14,7 @@ import { YesNo } from '../../common/enums/yes-no.enum';
 
 export class CreateQuestionnaireDto {
   @ApiProperty({ description: 'The name of the person', example: 'John Doe' })
-  @IsString({ message: 'Name is required' })
+  @IsString()
   @IsNotEmpty({ message: 'Name is required' })
   @Length(1, 15, { message: 'Name must be between 1 and 15 characters' })
   name: string;
