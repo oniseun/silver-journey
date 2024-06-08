@@ -72,10 +72,10 @@ describe('Health Information Form', () => {
       cy.get('button[type="submit"]').click();
   
       cy.get('.invalid-feedback').should('contain', 'Name is required');
-      cy.get('.invalid-feedback').should('contain', 'Age is required');
+      cy.get('.invalid-feedback').should('contain', 'Age must be a positive number');
       cy.get('.invalid-feedback').should('contain', 'Gender is required');
-      cy.get('.invalid-feedback').should('contain', 'Health Condition is required');
-      cy.get('.invalid-feedback').should('contain', 'Experienced Symptoms is required');
+      cy.get('.invalid-feedback').should('contain', 'Health condition is required');
+      cy.get('.invalid-feedback').should('contain', 'Experienced symptoms is required');
     });
   
     it('should validate form for healthy status with symptoms where symptoms is not filled', () => {
