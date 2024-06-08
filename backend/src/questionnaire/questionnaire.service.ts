@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Questionnaire } from './questionnaire.entity';
 import { CreateQuestionnaireDto } from './dto/create-questionnaire.dto';
+import { Questionnaire } from './entities/questionnaire.entity';
+import { QuestionnaireListDto } from './dto/questionnaire-list.dto';
 
 @Injectable()
 export class QuestionnaireService {
   constructor(
     @InjectRepository(Questionnaire)
-    private questionnaireRepository: Repository<Questionnaire>,
+    private readonly questionnaireRepository: Repository<Questionnaire>,
   ) {}
 
-  create(
+  async create(
     createQuestionnaireDto: CreateQuestionnaireDto,
   ): Promise<Questionnaire> {
     const questionnaire = this.questionnaireRepository.create(
@@ -20,7 +21,11 @@ export class QuestionnaireService {
     return this.questionnaireRepository.save(questionnaire);
   }
 
-  findAll(): Promise<Questionnaire[]> {
-    return this.questionnaireRepository.find();
+  async findAll(): Promise<QuestionnaireListDto[]> {
+    const questionnaires = await this.questionnaireRepository.find();
+    return questionnaires.map((q) => {
+      q.name = q.decryptName();
+      return new QuestionnaireListDto(q);
+    });
   }
 }
