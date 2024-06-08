@@ -1,8 +1,8 @@
-import { object, string, number, enums, refine, optional } from 'superstruct';
+import { object, string, number, enums, refine, optional, size } from 'superstruct';
 import { YesNo, HealthCondition, Gender } from '../enums/enums';
 
 const schema = object({
-  name: string(),
+  name: size(string(), 1, 15),
   age: refine(number(), 'PositiveNumber', value => value > 0),
   gender: enums(Object.values(Gender)),
   healthCondition: enums(Object.values(HealthCondition)),
