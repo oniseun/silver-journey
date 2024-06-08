@@ -15,6 +15,7 @@ import { Questionnaire } from './questionnaire/entities/questionnaire.entity';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'mysql',
+        driver: require('mysql2'),
         host: configService.get<string>('DATABASE_HOST'),
         port: configService.get<number>('DATABASE_PORT'),
         username: configService.get<string>('DATABASE_USERNAME'),
