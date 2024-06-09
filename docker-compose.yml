@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0-oracle
+    container_name: healthcare_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: healthcare
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - healthcare_network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: healthcare_backend
+    working_dir: /app
+    command: /bin/sh -c "npm install && npm run start:dev"
+    environment:
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: healthcare
+      ENCRYPTION_KEY: test1
+      PORT: 3006
+    ports:
+      - "3006:3006"
+    depends_on:
+      - mysql
+    volumes:
+      - ./backend:/app
+    networks:
+      - healthcare_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.nginx
+      args:
+        - REACT_APP_API_ENDPOINT=http://localhost:3006
+    container_name: healthcare_frontend
+    environment:
+      - PORT=80
+      - REACT_APP_API_ENDPOINT=http://localhost:3006
+    ports:
+      - "3005:80"
+    depends_on:
+      - backend
+    networks:
+      - healthcare_network
+
+volumes:
+  mysql_data:
+
+networks:
+  healthcare_network:
+    driver: bridge
