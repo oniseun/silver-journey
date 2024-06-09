@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { superstructResolver } from '@hookform/resolvers/superstruct';
 import schema from '../schemas/validationSchema';
@@ -30,12 +30,25 @@ const MyForm: React.FC = () => {
     getValues,
     setValue,
     clearErrors,
+    reset,
   } = useForm<FormData>({
     resolver: superstructResolver(schema),
   });
 
   const experiencedSymptoms = watch('experiencedSymptoms');
   const healthCondition = watch('healthCondition');
+
+  useEffect(() => {
+    if (experiencedSymptoms === YesNo.No) {
+      setValue('symptoms', '');
+    }
+  }, [experiencedSymptoms, setValue]);
+
+  useEffect(() => {
+    if (healthCondition !== HealthCondition.ChronicIllness) {
+      setValue('chronicConditionDetails', '');
+    }
+  }, [healthCondition, setValue]);
 
   const getErrorMessage = (field: string, type: string): string => {
     console.log({field, type})
@@ -70,7 +83,7 @@ const MyForm: React.FC = () => {
         </div>,
         {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -78,6 +91,7 @@ const MyForm: React.FC = () => {
           progress: undefined,
         }
       );
+      reset();
     } catch (error) {
       toast.error(
         <div>
@@ -85,7 +99,7 @@ const MyForm: React.FC = () => {
         </div>,
         {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
