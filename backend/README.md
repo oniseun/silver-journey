@@ -1,73 +1,150 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+Health Questionnaire Backend
+============================
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend part of the Health Questionnaire application built with NestJS and MySQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Prerequisites
+-------------
 
-## Description
+*   Node.js version: v18.19.0
+*   NPM
+*   NVM (Node Version Manager)
+*   Docker
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Setup Instructions
+------------------
 
-## Installation
+1.  **Clone the Repository**
+    
+        git clone https://github.com/oniseun/silver-journey.git
+        cd silver-journey/backend
+    
+2.  **Use the Correct Node Version**
+    
+    Ensure you are using the correct version of Node.js:
+    
+        nvm use
+    
+3.  **Setup Environment Variables and Install Packages**
+    
+    Run the following command to set up environment variables and install the required packages:
+    
+        npm run setup
+    
+4.  **Start the MySQL Database**
+    
+    Run the following command to start the MySQL database on Docker:
+    
+        npm run start:db
+    
+5.  **Start the Development Server**
+    
+    The backend will run on `localhost:3006`:
+    
+        npm run start:dev
+    
 
-```bash
-$ npm install
-```
+Running Tests
+-------------
 
-## Running the app
+### Unit Tests
 
-```bash
-# development
-$ npm run start
+To run the unit tests, use the following command:
 
-# watch mode
-$ npm run start:dev
+    npm run test
 
-# production mode
-$ npm run start:prod
-```
+### End-to-End Tests
 
-## Test
+To run the end-to-end tests, use the following command:
 
-```bash
-# unit tests
-$ npm run test
+    npm run test:e2e
 
-# e2e tests
-$ npm run test:e2e
+Environment Variables
+---------------------
 
-# test coverage
-$ npm run test:cov
-```
+The application requires several environment variables to be set. Use the `.env` file for setting these variables. A sample file is provided for reference.
 
-## Support
+    DATABASE_HOST=localhost
+    DATABASE_PORT=3306
+    DATABASE_USERNAME=root
+    DATABASE_PASSWORD=password
+    DATABASE_NAME=healthcare
+    ENCRYPTION_KEY=test1
+    PORT=3006
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Make sure to replace the placeholder values with the actual values required for your setup.
 
-## Stay in touch
+Scripts
+-------
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+*   `npm run start:db`: Starts the MySQL database on Docker.
+*   `npm run start:dev`: Starts the development server.
+*   `npm run test:e2e`: Runs the end-to-end tests.
+*   `npm run test`: Runs the unit tests.
+*   `npm run setup`: Copies environment variables from `.envsample` to `.env` and installs packages.
 
-## License
 
-Nest is [MIT licensed](LICENSE).
+Additional Information
+----------------------
+
+*   The application uses NestJS framework for building efficient and scalable server-side applications.
+*   Database used is MySQL.
+*   The application includes comprehensive logging using Pino.
+
+Project Structure
+-----------------
+
+    backend/
+    |-- src/
+    |   |-- common/
+    |   |   |-- enums/
+    |   |   |   |-- gender.enum.ts
+    |   |   |   |-- health-condition.enum.ts
+    |   |   |   |-- yes-no.enum.ts
+    |   |-- questionnaire/
+    |   |   |-- dto/
+    |   |   |   |-- create-questionnaire.dto.ts
+    |   |   |   |-- questionnaire-list.dto.ts
+    |   |   |-- entities/
+    |   |   |   |-- questionnaire.entity.ts
+    |   |   |-- questionnaire.controller.ts
+    |   |   |-- questionnaire.controller.spec.ts
+    |   |   |-- questionnaire.module.ts
+    |   |   |-- questionnaire.service.ts
+    |   |   |-- questionnaire.service.spec.ts
+    |   |-- app.module.ts
+    |-- .envsample
+    |-- .env (generated by setup script)
+    |-- docker-compose.yml
+    |-- package.json
+    |-- README.md
+    |-- tsconfig.json
+    
+
+Example `.env`
+--------------
+
+Here is an example of what your `.env` should look like:
+
+    DATABASE_HOST=localhost
+    DATABASE_PORT=3306
+    DATABASE_USERNAME=root
+    DATABASE_PASSWORD=password
+    DATABASE_NAME=healthcare
+    ENCRYPTION_KEY=test1
+    PORT=3006
+
+Usage
+-----
+
+Once the setup is complete, you can start the application by running:
+
+    npm run start:dev
+
+The application will be accessible at `http://127.0.0.1:3006`.
+
+
+Swagger Documentation
+---------------------
+
+Swagger documentation for the API can be accessed at `http://localhost:3006/api`. 
