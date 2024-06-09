@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNotEmpty,
-  IsOptional,
   IsPositive,
   IsString,
   ValidateIf,
@@ -16,7 +15,6 @@ export class CreateQuestionnaireDto {
   @ApiProperty({ description: 'The name of the person', example: 'John Doe' })
   @IsString()
   @IsNotEmpty({ message: 'Name is required' })
-  @Length(1, 15, { message: 'Name must be between 1 and 15 characters' })
   name: string;
 
   @ApiProperty({ description: 'The age of the person', example: 30 })

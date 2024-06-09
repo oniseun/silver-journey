@@ -60,7 +60,11 @@ export class QuestionnaireService {
   }
 
   async findAll(): Promise<QuestionnaireListDto[]> {
-    const questionnaires = await this.questionnaireRepository.find();
+    const questionnaires = await this.questionnaireRepository.find({
+      order: {
+        dateCreated: 'DESC',
+      },
+    });
     return questionnaires.map(
       (questionnaire) =>
         new QuestionnaireListDto({

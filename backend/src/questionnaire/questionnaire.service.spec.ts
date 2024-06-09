@@ -227,7 +227,6 @@ describe('QuestionnaireService', () => {
         constraints: expect.objectContaining({
           isNotEmpty: 'Name is required',
           isString: 'name must be a string',
-          isLength: 'Name must be between 1 and 15 characters',
         }),
       }),
     );
