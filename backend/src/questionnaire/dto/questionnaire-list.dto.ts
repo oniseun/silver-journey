@@ -57,24 +57,23 @@ export class QuestionnaireListDto {
   }
 
   private maskName(name: string): string {
-    const [firstName, lastName] = name.split(' ');
+    const names = name.split(' ');
 
-    if (!firstName) {
+    if (names.length === 0) {
       return name;
     }
 
-    const maskFirstName = (first: string): string => {
-      if (first.length > 2) {
-        const middle = first.slice(1, -1).replace(/./g, '*');
-        return `${first[0]}${middle}${first.slice(-1)}`;
+    const maskNamePart = (part: string): string => {
+      if (part.length > 2) {
+        const middle = part.slice(1, -1).replace(/./g, '*');
+        return `${part[0]}${middle}${part.slice(-1)}`;
       }
-      return first;
+      return part;
     };
 
-    if (lastName) {
-      return `${maskFirstName(firstName)} ${lastName}`;
-    }
+    const maskedNames = names.slice(0, -1).map(maskNamePart);
+    const lastName = names[names.length - 1];
 
-    return maskFirstName(firstName);
+    return [...maskedNames, lastName].join(' ');
   }
 }
