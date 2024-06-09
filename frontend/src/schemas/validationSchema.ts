@@ -2,7 +2,7 @@ import { object, string, number, enums, refine, optional, size } from 'superstru
 import { YesNo, HealthCondition, Gender } from '../enums/enums';
 
 const schema = object({
-  name: size(string(), 1, 15),
+  name: size(string(), 1, Infinity),
   age: refine(number(), 'PositiveNumber', value => value > 0),
   gender: enums(Object.values(Gender)),
   healthCondition: enums(Object.values(HealthCondition)),

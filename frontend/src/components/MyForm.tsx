@@ -133,7 +133,7 @@ const MyForm: React.FC = () => {
                 {...register('age')}
                 onChange={(e) => {
                   setValue('age', parseInt(e.target.value, 10));
-                  clearErrors('age'); // Clear the age error if any
+                  clearErrors('age'); 
                 }}
               />
               {errors.age && <div className="invalid-feedback">{getErrorMessage('age', errors.age.type)}</div>}

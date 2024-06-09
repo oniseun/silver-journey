@@ -11,7 +11,6 @@ describe('MyForm Component', () => {
     it('validates form inputs', async () => {
         const { getByLabelText, getByText } = render(<MyForm />);
     
-        // Try submitting the form without filling any fields
         fireEvent.click(getByText(/submit/i));
     
         await waitFor(() => {
